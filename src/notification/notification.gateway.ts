@@ -21,7 +21,10 @@ export interface NotificationDto {
 }
 
 @Injectable()
-@WebSocketGateway({ cors: { origin: '*' }, namespace: 'notifications' })
+@WebSocketGateway(
+  process.env.WEBSOCKET_PORT ? parseInt(process.env.WEBSOCKET_PORT, 10) : 8080,
+  { cors: { origin: '*' }, namespace: 'notifications' },
+)
 export class NotificationGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -38,6 +41,13 @@ export class NotificationGateway
     private readonly evenementRepository: Repository<Evenement>,
   ) {
     this.scheduleAllReminders();
+  }
+
+  afterInit() {
+    console.log(
+      'WebSocket initialisé sur le port',
+      process.env.WEBSOCKET_PORT || 8080,
+    );
   }
 
   async scheduleAllReminders() {

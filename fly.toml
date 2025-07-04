@@ -1,0 +1,32 @@
+app = "event-api"
+primary_region = "iad"
+
+[env]
+  DB_HOST = "postgresql-bddnarcisse.alwaysdata.net"
+  DB_PORT = "5432"
+  DB_USERNAME = "bddnarcisse"
+  DB_PASSWORD = "bddDesire1234"
+  DB_NAME = "bddnarcisse_gestion_evenement_academique"
+  PORT = "3000"
+  WEBSOCKET_PORT = "8080"
+  JWT_SECRET = "$2b$10$GwCbvoOvbXRAW0fQODJfk.zAUVxVja9BlDOu51EsylW3NGhczRuXi"
+  JWT_AUD = "https://event-api.fly.dev"
+  JWT_ISSUER = "https://event-api.fly.dev"
+  JWT_TTL = "4200"
+
+[build]
+  builder = "docker"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  protocol = "tcp"
+  [[services.ports]]
+    port = 8080
